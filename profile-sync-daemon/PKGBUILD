@@ -1,0 +1,27 @@
+# Maintainer: David Runge <dvzrv@archlinux.org>
+# Contributor: graysky <graysky AT archlinux DOT us>
+
+pkgname=profile-sync-daemon
+pkgver=6.44
+pkgrel=2
+pkgdesc="Symlinks and syncs browser profile dirs to RAM"
+arch=('any')
+url="git+https://github.com/frap129/profile-sync-daemon#branch=doas"
+license=('MIT')
+depends=('bash' 'findutils' 'procps-ng' 'rsync' 'systemd')
+optdepends=('zsh-completions: for completion when using zsh')
+install="${pkgname}.install"
+source=("git+https://github.com/frap129/${pkgname}#branch=doas")
+sha512sums=('SKIP')
+
+build() {
+  cd "$pkgname"
+  make
+}
+
+package() {
+  cd "$pkgname"
+  make DESTDIR="$pkgdir/" install
+  install -vDm 644 MIT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -vDm 644 README.md -t "${pkgdir}/usr/share/doc/${pkgname}"
+}
